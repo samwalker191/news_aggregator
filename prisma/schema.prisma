@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id            Int     @id @default(autoincrement())
+  title         String
+  description   String
+  publishedDate DateTime
+  state         String
+  topic         String
+  author        String
+  source        String
+  url           String
+  imageUrl      String?
+  content       String
+
+  @@unique(name: "authorTitle", [author, title])
+  @@index([topic])
+  @@index([state])
+  @@index([state, topic, title])
+}
