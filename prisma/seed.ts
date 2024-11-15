@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import Art
 
 interface NewsApiResponse {
     status: string;

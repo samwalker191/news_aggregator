@@ -11,13 +11,14 @@ import { Badge } from "./shadcn/badge";
 import Link from "next/link";
 
 export default function NewsListItem({ article }: { article: Article }) {
-
+    console.log(typeof article.publishedDate);
+    const publishedDate = new Date(article.publishedDate);
     return (
         <Link href={`article/${article.id}`} className="no-underline">
             <Card className="w-full hover:bg-secondary/80 transition-colors ease-in-out duration-200">
                 <CardHeader>
                     <CardTitle>{article.title}</CardTitle>
-                    <CardDescription>Published: {article.publishedDate.toLocaleDateString()} - {article.publishedDate.toLocaleTimeString()}</CardDescription>
+                    <CardDescription>Published: {publishedDate.toLocaleDateString()} - {publishedDate.toLocaleTimeString()}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <CardDescription>{article.description}</CardDescription>
@@ -30,6 +31,5 @@ export default function NewsListItem({ article }: { article: Article }) {
                 </CardFooter>
             </Card>
         </Link>
-        
     )
 }
