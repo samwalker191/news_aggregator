@@ -10,15 +10,15 @@ import {
 
 export default function ArticlePagination({ page, handlePageSet, total }: {page: number, handlePageSet: Function, total: number}) {
     const hasMore = total - (page * 20) > 20;
-    const totalPages = Math.ceil(total / 20);
+    const totalPages = Math.ceil(total / 20); 
 
-    const pageButtons = [page];
+    const pageButtons = [page]; 
     let i = page + 1;
     let j = page - 1;
     while (pageButtons.length < 4 && pageButtons.length < totalPages) {
         if (i < totalPages)
             pageButtons.push(i);
-        if (j >= 1)
+        if (j >= 0)
             pageButtons.unshift(j);
 
         i++;
@@ -42,16 +42,16 @@ export default function ArticlePagination({ page, handlePageSet, total }: {page:
                     )
                 })}
                 
-                {hasMore &&
-                    <>
-                        <PaginationItem>
-                            <PaginationEllipsis />
-                        </PaginationItem>
-
-                        <PaginationItem>
-                            <PaginationNext onClick={() => handlePageSet(page + 1)} />
-                        </PaginationItem>
-                    </>
+                {pageButtons[pageButtons.length-1] < totalPages-1 && 
+                    <PaginationItem>
+                        <PaginationEllipsis />
+                    </PaginationItem>
+                }
+                
+                {hasMore && 
+                    <PaginationItem>
+                        <PaginationNext onClick={() => handlePageSet(page + 1)} />
+                    </PaginationItem>
                 }
             </PaginationContent>
         </Pagination>
