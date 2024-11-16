@@ -5,6 +5,7 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 
+import ReactQueryProvider from "@/lib/react-query-provider";
 
 const roboto = Roboto({
   weight: ["400", "700"],
@@ -26,7 +27,9 @@ export default function RootLayout({
       <body
         className={`${roboto.className} antialiased flex justify-center`}
       >
-        {children}
+        <ReactQueryProvider>
+          {children}
+        </ReactQueryProvider>
       </body>
     </html>
   );
