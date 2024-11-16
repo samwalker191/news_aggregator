@@ -7,30 +7,39 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/shadcn/select";
 import { Input } from "./components/shadcn/input";
 import { delay } from "@/lib/utils";
+import ArticlePagination from "./components/article-pagination";
 
 // hardcoding values from seeds file to keep it simple. Could also fetch all distinct values from db.
 const STATE_NAMES = ['California', 'Texas', 'Florida', "Washington", "Virginia", "Nevada"];
 const TOPICS = ["education", "health", "safety", "housing", "law", "finance", "technology"];
 
-
 export default function Home() {
   const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
   const [keyword, setKeyword] = useState<string>("");
-  const debouncedKeyword = useDebounce(keyword, 300);
+  const debouncedKeyword = useDebounce(keyword, 400);
   const [stateName, setStateName] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
+  const [page, setPage] = useState<number>(0);
 
-  const { error, data, isFetching, isLoading } = useQuery({
-      queryKey: ['searchResults', stateName, topic, debouncedKeyword],
+  const { data, isLoading } = useQuery({
+      queryKey: ['searchResults', stateName, topic, debouncedKeyword, page],
       queryFn: async () => {
-          await delay(1000); // used to demonstrate caching is working
-          const res = await fetch(`${DOMAIN}/api/news?state=${stateName}&topic=${topic}&search=${keyword}`);
+          // await delay(1000); // used to demonstrate caching is working
+          const res = await fetch(`${DOMAIN}/api/news?state=${stateName}&topic=${topic}&search=${keyword}&page=${page}`);
           return await res.json();
       }
   })
 
-  const articles = data ?? [];
+  const articles = data?.articles ?? [];
+  const total = data?.total ?? 0;
+
+  function handlePageSet(newPage: number) {
+    setPage(newPage);
+    window.scrollTo({
+      top: 0
+    });
+  }
 
   return (
     <section className="flex flex-col w-[85%] items-center justify-center">
@@ -65,6 +74,10 @@ export default function Home() {
       
       {data && 
         <NewsList articles={articles}/>
+      }
+
+      {total > 0 && 
+        <ArticlePagination page={page} handlePageSet={handlePageSet} total={total} />
       }
       
     </section>

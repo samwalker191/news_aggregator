@@ -1,15 +1,22 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/db";
-import { Article } from "@prisma/client";
+import { Article, Prisma } from "@prisma/client";
 import { zfd } from "zod-form-data";
 
-export async function GET(request: NextRequest): Promise<NextResponse<Article[]>>  {
+export async function GET(request: NextRequest): Promise<NextResponse<{ total: number, articles: Article[]}>>  {
     const searchParams = request.nextUrl.searchParams;
     const state = searchParams.get("state");
     const topic = searchParams.get("topic");
     const keyword = searchParams.get("search");
 
-    const result = await prisma.article.findMany({
+    const pageString = searchParams.get("page") ?? "";
+    let page: number | null = parseInt(pageString);
+    page = isNaN(page) ? 0 : page;
+    const skip = page * 20;
+
+    const query: Prisma.ArticleFindManyArgs = {
+        take: 20,
+        skip: skip,
         where: {
             ...(topic ? { topic } : {}),
             ...(state ? { state } : {}),
@@ -17,9 +24,14 @@ export async function GET(request: NextRequest): Promise<NextResponse<Article[]>
                 contains: keyword ?? ""
             }
         }
-    })
+    }
 
-    return NextResponse.json(result);
+    const [articles, count] = await prisma.$transaction([
+        prisma.article.findMany(query),
+        prisma.article.count({ where: query.where })
+    ]);
+
+    return NextResponse.json({ articles, total: count });
 }
 
 const schema = zfd.formData({

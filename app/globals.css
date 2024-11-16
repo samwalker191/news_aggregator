@@ -71,6 +71,7 @@ body {
   }
   a {
     @apply underline;
-    @apply hover:text-foreground
+    @apply hover:text-foreground;
+    @apply cursor-pointer;
   }
 }
