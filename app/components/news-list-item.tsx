@@ -1,4 +1,3 @@
-import { Article } from "@/lib/types";
 import {
     Card,
     CardContent,
@@ -9,6 +8,8 @@ import {
   } from "./shadcn/card";
 import { Badge } from "./shadcn/badge";
 import Link from "next/link";
+import { formatDate } from "@/lib/utils";
+import { Article } from "@prisma/client";
 
 export default function NewsListItem({ article }: { article: Article }) {
     console.log(typeof article.publishedDate);
@@ -18,7 +19,7 @@ export default function NewsListItem({ article }: { article: Article }) {
             <Card className="w-full hover:bg-secondary/80 transition-colors ease-in-out duration-200">
                 <CardHeader>
                     <CardTitle>{article.title}</CardTitle>
-                    <CardDescription>Published: {publishedDate.toLocaleDateString()} - {publishedDate.toLocaleTimeString()}</CardDescription>
+                    <CardDescription>{formatDate(publishedDate)}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <CardDescription>{article.description}</CardDescription>
