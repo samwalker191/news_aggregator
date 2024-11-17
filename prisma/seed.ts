@@ -22,19 +22,20 @@ const apiKey = process.env.NEWS_API_KEY;
 const apiEndpoint = "https://newsapi.org/v2/everything";
 
 const topics: string[] = [
-    "education", // done
-    "health", // done
+    "education", 
+    "health", 
     "safety",
     "housing",
     "law",
     "finance",
     "technology"
 ];
-const stateNames: string[] = ['California', 'Texas', 'Florida', "Washington", "Virginia", "Nevada"] // limiting to a few due to api limits
+const stateNames: string[] = ['California', 'Texas', 'Florida', "Washington", "Virginia", "Nevada"] // limiting to a few due to daily api limits
+const dateToSearchFrom = "2024-11-01"
 
 async function fetchArticlesByStateAndTopic(state: string, topic: string): Promise<NewsApiResponse> {
     const query = encodeURIComponent(`+${topic} AND +${state}`);
-    const url = `${apiEndpoint}?q=${query}&from=2024-11-01&language=en&searchIn=title,description&apiKey=${apiKey}`;
+    const url = `${apiEndpoint}?q=${query}&from=${dateToSearchFrom}&language=en&searchIn=title,description&apiKey=${apiKey}`;
     const res = await fetch(url);
     const data = await res.json();
 
@@ -62,6 +63,7 @@ async function main() {
                         content: article.content
                     }})
                 } catch (error) {
+                    // will most likely happen due to duplicate articles. determined by uniqueness on Author - Title.
                     console.log(error);
                     console.log(article.author);
                     console.log(article.title);

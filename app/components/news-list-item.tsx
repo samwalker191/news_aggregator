@@ -26,8 +26,8 @@ export default function NewsListItem({ article }: { article: Article }) {
                 </CardContent>
                 <CardFooter>
                     <div className="flex gap-2">
-                        <Badge className="bg-[#064e3b]">{article.state}</Badge>
-                        <Badge className="bg-[#155e75]">{article.topic}</Badge>
+                        <Badge className="bg-[#064e3b] capitalize">{article.state}</Badge>
+                        <Badge className="bg-[#155e75] capitalize">{article.topic}</Badge>
                     </div>
                 </CardFooter>
             </Card>

@@ -24,7 +24,7 @@ model Article {
   content       String
 
   @@unique(name: "authorTitle", [author, title])
-  @@index([topic])
-  @@index([state])
-  @@index([state, topic, title])
+  @@index([topic]) // when just searching topic
+  @@index([state, topic]) // when searching state, and state/topic
+  @@index([title, state, topic]) // when searching all of the above
 }

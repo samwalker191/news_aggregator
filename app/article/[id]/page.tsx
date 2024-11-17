@@ -17,7 +17,7 @@ export default function ArticleDetails() {
     const { error, data, isLoading } = useQuery({
         queryKey: ['articleDetails', id],
         queryFn: async () => {
-            await delay(1000); // used to demonstrate caching is working
+            // await delay(1000); // used to demonstrate caching is working
             const res = await fetch(`${DOMAIN}/api/news/${id}`);
             return await res.json();
         }
@@ -46,8 +46,8 @@ export default function ArticleDetails() {
                     </p>
                 </div>
                 <div className="flex gap-2 h-min self-end">
-                    <Badge className="bg-[#064e3b]">{data.state}</Badge>
-                    <Badge className="bg-[#155e75]">{data.topic}</Badge>
+                    <Badge className="bg-[#064e3b] capitalize">{data.state}</Badge>
+                    <Badge className="bg-[#155e75] capitalize">{data.topic}</Badge>
                 </div>
             </section>
             
