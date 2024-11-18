@@ -40,7 +40,7 @@ export default function ArticleDetails() {
                     <p>By <span className="font-bold uppercase">{data.author}</span></p>
                     <p>{formatDate(publishedDate)}</p>
                     <p>
-                        From <a href={data.url} className="font-bold">
+                        From <a href={data.url} target="_blank" rel="noopener noreferrer" className="font-bold">
                             {data.source}<FontAwesomeIcon icon={faArrowUpRightFromSquare} width="14" className="ml-1"/>
                         </a>
                     </p>
